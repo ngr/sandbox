@@ -1,2 +1,18 @@
 Compute cost for theta [0;0]: 32.073
 Theta found by gradient descent: -3.630291 1.166362
+
+
+Theta found by NormalEquations: 
+8.9598e+004
+1.3921e+002
+-8.7380e+003
+
+Price of house: $293,081
+
+[12:54] <grishchenko> hi guys! Still can't solve LinearRegression with multi params. :(
+[12:55] <grishchenko> as far as i understand, to calculate h(x) value (which should be a real number each iteration or a 47x1 vector) I need smth like this:
+[12:55] <grishchenko> h_of_X = theta' .* X;
+[12:57] <grishchenko> this really gives me a result, but looks like some wrong result, because if I use it later the overall result differs from the correct (calculated with Normal Equations)
+[12:58] <grishchenko> AND Octave floods me with warning 'automatic broadcasting operation applied'
+[12:58] <grishchenko> Could you please help me undestand what's wrong?
+[12:59] <grishchenko> P.S. theta is [0;0;0], X is 47x3 matrix (with 1s in the first column).

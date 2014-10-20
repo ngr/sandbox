@@ -83,7 +83,8 @@ fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
 alpha = 0.01;
-num_iters = 400;
+num_iters = 2000;
+%num_iters = 1400; % Original was 400
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(3, 1);
@@ -104,7 +105,9 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
+% grischenko: In order to use theta we need to adjust parameters to normalization coefficients first.
+price = [1  ((1650 - mu(1)) ./ sigma(1)) ((3 - mu(2)) ./ sigma(2))  ] * theta;
+
 
 
 % ============================================================
@@ -149,8 +152,8 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
-
+% grischenko: No normalization was required with Normal Equations
+price = [1 1650 3] * theta;
 
 % ============================================================
 
