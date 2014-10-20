@@ -14,11 +14,13 @@ figure; hold on;
 
 
 
+% Find Indices of Positive and Negative Examples
 
+passed = find(y == 1);
+failed = find(y == 0);
 
-
-
-
+plot (X(passed, 1), X(passed, 2), '@', 'Color', 'Blue', 'MarkerSize', 6 )
+plot (X(failed, 1), X(failed, 2), '@', 'Color', 'Red', 'MarkerSize', 6)
 
 % =========================================================================
 
