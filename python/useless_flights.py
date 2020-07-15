@@ -9,13 +9,14 @@ def destinations_dict(schedule) -> Dict:
     result = defaultdict(list)
     for flight in schedule:
         result[flight[1]].append((flight[0], flight[2]))
+        result[flight[0]].append((flight[1], flight[2]))
     return dict(result)
 
 
 def get_best_price(a, b):
     global by_destination
 
-    best_price = None
+    best_price = 999999999
     if b in by_destination:
         for source, price in by_destination[b]:
             if source == a:
@@ -41,7 +42,7 @@ def get_smart_price(source, destination, exclude_list=[], best=1000) -> List:
     print(f"####Getting price {source} to {destination} with current best {best_price}")
 
     if destination not in by_destination:
-        return None
+        return best_price
 
     for src, value in by_destination[destination]:
         print(f"You can get to {destination} for {value} from {src}")
@@ -61,13 +62,14 @@ def get_smart_price(source, destination, exclude_list=[], best=1000) -> List:
         # print(src, destination, value)
         # print(f"calculate {src}, {destination}")
 
+        # smart_price = get_smart_price(source, src, exclude_list=[*exclude_list, (src, destination)])
         smart_price = get_smart_price(source, src, exclude_list=[*exclude_list, (src, destination)])
 
         # if not smart_price or smart_price == 1000:
         #     return None
 
         print(f"you can get to {destination} from {src} for {smart_price}")
-        if smart_price and smart_price + cost <= best_price:
+        if smart_price and best_price and smart_price + cost <= best_price:
             best_price = smart_price + cost
             break
         else:
@@ -119,20 +121,31 @@ if __name__ == '__main__':
     #   print(useless_flight([['A', 'B', 50], ['B', 'C', 30], ['A', 'C', 90], ['A', 'C', 100]]))
     # print(useless_flight([['A', 'B', 50], ['B', 'C', 30], ['A', 'C', 90]]))
 
-    # assert useless_flight([['A', 'B', 50], ['B', 'C', 30], ['A', 'C', 90], ['A', 'C', 100]]) == [2, 3]
-    # assert useless_flight([['A', 'B', 50], ['B', 'C', 40], ['A', 'C', 90]]) == []
+    assert useless_flight([['A', 'B', 50], ['B', 'C', 30], ['A', 'C', 90], ['A', 'C', 100]]) == [2, 3]
+    assert useless_flight([['A', 'B', 50], ['B', 'C', 40], ['A', 'C', 90]]) == []
 
     #   assert useless_flight([['A', 'B', 50],
     # ['B', 'C', 40],
     # ['A', 'C', 40]]) == []
-    assert useless_flight([
-        ['A', 'C', 10],  # 0
-        ['C', 'B', 10],  # 1
-        ['C', 'E', 10],
-        ['C', 'D', 10],  # 3
-        ['B', 'E', 25],  # 4
-        ['A', 'D', 20],
-        ['D', 'F', 50],
-        ['E', 'F', 90]  # 7
-    ]) == [4, 7]
+
+    assert useless_flight(
+            [["A", "B", 70],  # 0
+             ["A", "C", 35],
+             ["A", "D", 30],
+             ["A", "J", 15],  # 3
+             ["B", "C", 15],
+             ["B", "E", 50],
+             ["C", "D", 90],  # 6
+             ["C", "E", 90],
+             ["D", "J", 20],
+             ["E", "G", 100],  # 9
+             ["E", "I", 85],
+             ["F", "G", 20],
+             ["F", "H", 25],  # 12
+             ["F", "I", 90],
+             ["H", "I", 95],  # 14
+             ["H", "J", 35],
+             ["I", "J", 40]
+             ]
+    ) == [0, 6, 7, 14]
 #   print("Coding complete? Click 'Check' to earn cool rewards!")
