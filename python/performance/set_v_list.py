@@ -8,8 +8,8 @@ from pprint import pprint
 from sosw.app import Processor as SoswProcessor
 from sosw.components.benchmark import benchmark
 
-DATA_SIZE = 100_000_000
-NUM_TESTS = 10_000_000
+DATA_SIZE = 1_000_000
+NUM_TESTS = 1_000
 
 if sys.version_info < (3, 7):
     raise SystemExit('Sorry, this code need Python 3.7+ in order to measure nanoseconds')
@@ -17,10 +17,11 @@ if sys.version_info < (3, 7):
 
 class Processor(SoswProcessor):
 
+    @benchmark
     def __init__(self, *args, **kwargs):
         # Build random SAMPLES
-        self.data_s = set(str(random.randint(1, DATA_SIZE * 1000) for _ in range(DATA_SIZE)))
-        self.data_l = list(str(random.randint(1, DATA_SIZE * 1000) for _ in range(DATA_SIZE)))
+        self.data_s = set(str(random.randint(1, DATA_SIZE * 1000)) for _ in range(DATA_SIZE))
+        self.data_l = list(str(random.randint(1, DATA_SIZE * 1000)) for _ in range(DATA_SIZE))
 
         super().__init__(*args, **kwargs)
 
@@ -45,10 +46,16 @@ if __name__ == '__main__':
     p = Processor()
     p()
 
+    print(len(p.data_s))
+    print(len(p.data_l))
+
     pprint(p.get_stats())
 
 """
 Average method execution time (ns):
- 'time_find_in_list':   6.8,
- 'time_find_in_set':    1.6,
+ 'time_find_in_list':   8.093640963430516,
+ 'time_find_in_set':    0.00016377470456063747,
+ 
+ On a simple dataset of 1_000_000 of short strings.
+ Finding in set was ~50_000 times faster than in list.
 """
